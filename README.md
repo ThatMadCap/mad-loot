@@ -21,7 +21,7 @@ Each loot table can have:
 - Drop Chances: Specify odds for rolling on a tier or individual items.
 - Guaranteed Rewards: Add guaranteed drops for specific items.
 
-### Highly Flexible
+### Flexible
 Use predefined tiers or roll on all tiers at once.
 Set custom chances for each tier and item.
 Scale loot probabilities dynamically for different scenarios.
@@ -97,17 +97,38 @@ local loot = exports["mad-loot"]:GenerateLoot(tableName, tiers, useGuaranteed)
 
 
 **Example Usage:**
+
+Using the export:
+
 ```lua
 local loot = exports['mad-loot']:GenerateLoot('fleecaBank', {'primary', 'secondary'}, true)
 
--- Handle adding items
+-- Process the loot
 for _, item in ipairs(loot) do
-    print("^6Player receives: " .. item.amount .. 'x "' .. item.item .. '"^0')
+    print("Player receives: " .. item.amount .. 'x "' .. item.item .. '"')
     -- Example adding generated loot items with ox_inventory:
     -- (Replace with your own inventory system if needed)
     -- exports.ox_inventory:AddItem(source, item.item, item.amount)
 end
 ```
+
+Alternatively, you can trigger the callback directly using `lib.callback.await` to synchronously generate loot:
+```lua
+local loot = lib.callback.await("mad-loot:server:generateLoot", "fleecaBank", true, true)
+
+-- Process the loot
+for _, item in ipairs(loot) do
+    print("Player receives: " .. item.amount .. 'x "' .. item.item .. '"')
+    -- Example adding generated loot items with ox_inventory:
+    -- (Replace with your own inventory system if needed)
+    -- exports.ox_inventory:AddItem(source, item.item, item.amount)
+end
+```
+
+## Dependencies
+
+- [ox_lib](https://github.com/overextended/ox_lib)
+- [duff](https://github.com/overextended/ox_lib)
 
 ## Contributing
 If you'd like to contribute to mad-loot, feel free to open issues or submit pull requests. Please follow the project's coding conventions and ensure tests are included for any new features.

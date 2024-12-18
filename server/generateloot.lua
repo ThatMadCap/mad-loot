@@ -1,3 +1,5 @@
+local Debug = true -- true/false, provides useful prints for debugging
+
 -- Imports & Global Variables -----------------------------------------------------
 
 ---@module 'duff.shared.math'
@@ -10,8 +12,6 @@ local seed = math.seedrng()
 if Debug then print("Math Seed RNG: " .. seed) end
 
 local LootTables = lib.require("server/loottables")
-
-local Debug = true -- true/false, provides useful prints for debugging
 
 -- Functions -----------------------------------------------------------------------
 
@@ -31,10 +31,6 @@ local function RollForSuccess(low, high)
         return false -- Failure
     end
 end
-
--- TODO: un-nest things in this function into their own helper functions/wrappers?
--- ex: ValidateInputs(), DetermineTiers(), RollTier(), RollItem(), UseGuaranteed()
--- I feel like there's a better way of programming that I just don't get.
 
 --- Function to generate random loot based on robbery type and tier
 --- @param tableName string - The name of the loot table to use (e.g., 'fleecaBank').
@@ -101,22 +97,21 @@ local function GenerateLoot(tableName, tiers, useGuaranteed)
         if Debug then lib.print.info("^5[ -- Generating chance for tier: " .. tierName .. " -- ]^0") end
         local tierSuccess = RollForSuccess(tierData.tableChance.low, tierData.tableChance.high)
 
-        -- Early exit if tier roll fails
         if not tierSuccess then
             if Debug then lib.print.info('^1"' .. tierName .. '" tier not selected by chance^0') end
-            goto continue
+        else
+            if Debug then lib.print.info('^2"' .. tierName .. '" tier selected by chance^0') end
         end
 
         -- Check for overall guaranteed drops existence
         local hasGuaranteedDrops = tierData.guaranteed ~= nil
 
-        -- Check if guaranteed drops are enabled and exist in the tier
+        -- Process guaranteed drops
         if not useGuaranteed then
             if Debug then lib.print.info("Guaranteed drops: false") end
         elseif not hasGuaranteedDrops then
             if Debug then lib.print.info('^1"' .. tierName .. '" tier has no guaranteed drops^0') end
         else
-            -- Guaranteed drops processing
             if Debug then lib.print.info("^9Checking for guaranteed drops...^0") end
             for _, guaranteedDrop in ipairs(tierData.guaranteed) do
                 local amount = math.random(guaranteedDrop.minAmount, guaranteedDrop.maxAmount)
@@ -126,21 +121,21 @@ local function GenerateLoot(tableName, tiers, useGuaranteed)
             end
         end
 
-        -- Roll for random items within the current tier (guaranteed drops handled earlier)
-        for _, itemData in ipairs(tierData.items) do
-            if Debug then lib.print.info('^4[ -- Generating chance for item: "' .. itemData.item .. '" in tier: ' .. tierName .. " -- ]^0") end
-            local itemSuccess = RollForSuccess(itemData.itemChance.low, itemData.itemChance.high)
+        -- Roll for random items within the current tier
+        if tierSuccess then
+            for _, itemData in ipairs(tierData.items) do
+                if Debug then lib.print.info('^4[ -- Generating chance for item: "' .. itemData.item .. '" in tier: ' .. tierName .. " -- ]^0") end
+                local itemSuccess = RollForSuccess(itemData.itemChance.low, itemData.itemChance.high)
 
-            -- Check if the item roll succeeded
-            if itemSuccess then
-                local amount = math.random(itemData.minAmount, itemData.maxAmount)
-                -- Add selected item to the loot table
-                table.insert(loot, {item = itemData.item, amount = amount})
-                if Debug then lib.print.info('^2Item Added: "' .. itemData.item .. '", Amount: ' .. amount .. "^0") end
+                -- Check if the item roll succeeded
+                if itemSuccess then
+                    local amount = math.random(itemData.minAmount, itemData.maxAmount)
+                    -- Add selected item to the loot table
+                    table.insert(loot, {item = itemData.item, amount = amount})
+                    if Debug then lib.print.info('^2Item Added: "' .. itemData.item .. '", Amount: ' .. amount .. "^0") end
+                end
             end
         end
-
-        ::continue::
     end
 
     if Debug then

@@ -147,11 +147,9 @@ end
 
 -- Callback, Register and Export -----------------------------------------------------------------------
 
-lib.callback.register('mad-loot:server:generateLoot', function(tableName, tiers, useGuaranteed)
-    local src = source
+lib.callback.register('mad-loot:server:generateLoot', function(_, tableName, tiers, useGuaranteed)
     local loot = GenerateLoot(tableName, tiers, useGuaranteed)
     return loot
 end)
 
 exports("GenerateLoot", GenerateLoot)
-RegisterServerEvent("mad-loot:server:generateLoot")

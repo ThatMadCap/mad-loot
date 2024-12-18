@@ -1,3 +1,5 @@
+![mad-loot banner](https://github.com/user-attachments/assets/5af537ad-3cef-4576-b544-3ef425b5801c)
+
 # mad-loot
 
 Inspired by Old School RuneScape drop tables, mad-loot is a centralised loot generation resource designed to handle all your player reward distribution needs. Whether you're running a robbery system or giving rewards for other activities, mad-loot allows you to create fully customisable and randomisable loot tables with ease.

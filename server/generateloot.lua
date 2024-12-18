@@ -1,16 +1,6 @@
+-- Variables -----------------------------------------------------------------------
+
 local Debug = true -- true/false, provides useful prints for debugging
-
--- Imports & Global Variables -----------------------------------------------------
-
----@module 'duff.shared.math'
-local math = lib.require "@duff.shared.math"
-
--- Attaching the math to a local variable from CDuff
-local math = duff.math
-
-local seed = math.seedrng()
-if Debug then print("Math Seed RNG: " .. seed) end
-
 local LootTables = lib.require("server/loottables")
 
 -- Functions -----------------------------------------------------------------------

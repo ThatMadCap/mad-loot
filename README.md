@@ -98,12 +98,12 @@ local loot = exports["mad-loot"]:GenerateLoot(tableName, tiers, useGuaranteed)
 
 **Example Usage:**
 
-Using the export:
+Server-side:
 
 ```lua
 local loot = exports['mad-loot']:GenerateLoot('fleecaBank', {'primary', 'secondary'}, true)
 
--- Process the loot
+-- Example of processing the loot
 for _, item in ipairs(loot) do
     print("Player receives: " .. item.amount .. 'x "' .. item.item .. '"')
     -- Example adding generated loot items with ox_inventory:
@@ -111,12 +111,12 @@ for _, item in ipairs(loot) do
     -- exports.ox_inventory:AddItem(source, item.item, item.amount)
 end
 ```
+Client-side:
 
-Alternatively, you can trigger the callback directly using `lib.callback.await` to synchronously generate loot:
 ```lua
-local loot = lib.callback.await("mad-loot:server:generateLoot", "fleecaBank", true, true)
+local loot = lib.callback.await("mad-loot:server:generateLoot", false, "fleecaBank", true, true)
 
--- Process the loot
+-- Example of processing the loot
 for _, item in ipairs(loot) do
     print("Player receives: " .. item.amount .. 'x "' .. item.item .. '"')
     -- Example adding generated loot items with ox_inventory:

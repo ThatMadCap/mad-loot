@@ -16,5 +16,4 @@ shared_scripts {
 server_scripts {
   'server/generateloot.lua',
   'server/loottables.lua',
-  'server/main.lua',
 }

@@ -10,7 +10,6 @@ lua54 'yes'
 
 shared_scripts {
   '@ox_core/lib/init.lua',
-  '@duff/shared/import.lua',
 }
 
 server_scripts {

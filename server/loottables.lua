@@ -1,3 +1,7 @@
+-- low/high: Defines a random roll range. The chance of success is calculated as (low / high).
+-- For example:
+-- 1/1 = 100% chance, 1/10 = 10% chance, 1/100 = 1% chance
+-- Or 5/25 = 20% chance (allows for more flexible probabilities beyond single-value rolls)
 return
 { -- Store global loot tables
     fleecaBank = { -- Name of your loot table

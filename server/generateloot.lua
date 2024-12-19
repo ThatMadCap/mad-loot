@@ -1,6 +1,6 @@
 -- Variables -----------------------------------------------------------------------
 
---SetConvar('ox:printlevel:'.. cache.resource, 'debug') -- Comment out this line to disable debug prints
+SetConvar('ox:printlevel:'.. cache.resource, 'debug') -- Replace 'debug' with 'info' to disable debug prints
 local LootTables = lib.require("server/loottables")
 
 -- Functions -----------------------------------------------------------------------

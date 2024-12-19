@@ -1,5 +1,7 @@
 ![mad-loot banner](https://github.com/user-attachments/assets/5af537ad-3cef-4576-b544-3ef425b5801c)
 
+<a href="https://ko-fi.com/madcap" target="_blank"><img src="https://assets-global.website-files.com/5c14e387dab576fe667689cf/64f1a9ddd0246590df69ea0b_kofi_long_button_red%25402x-p-500.png" alt="Support me on Ko-fi" width="250"></a>
+
 # mad-loot
 
 Inspired by Old School RuneScape drop tables, mad-loot is a centralised loot generation resource designed to handle all your player reward distribution needs. Whether you're running a robbery system or giving rewards for other activities, mad-loot allows you to create fully customisable and randomisable loot tables with ease.

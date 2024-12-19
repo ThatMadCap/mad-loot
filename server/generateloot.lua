@@ -1,23 +1,22 @@
 -- Variables -----------------------------------------------------------------------
 
-local Debug = true -- true/false, provides useful prints for debugging
+--SetConvar('ox:printlevel:'.. cache.resource, 'debug') -- Comment out this line to disable debug prints
 local LootTables = lib.require("server/loottables")
 
 -- Functions -----------------------------------------------------------------------
 
 local function RollForSuccess(low, high)
     local percentageChance = (low / high) * 100
-    if Debug then lib.print.info("^3Attempting a " .. low .. " in " .. high .. " chance. (" .. string.format("%.2f%%", percentageChance) .. " chance)^0") end
-
+    lib.print.debug(("^3Attempting a %d in %d chance. (%.2f%% chance)^0"):format(low, high, percentageChance))
     -- Generate a random roll between 1 and the high value
     local roll = math.random(1, high)
 
     -- Check if the roll matches the 'low' value, which represents the 1/high chance
     if roll <= low then
-        if Debug then lib.print.info("^2Success! Rolled: " .. roll .. "^0") end
+        lib.print.debug("^2Success! Rolled: " .. roll .. "^0")
         return true -- Success
     else
-        if Debug then lib.print.info("^1Failed! Rolled: " .. roll .. "^0") end
+        lib.print.debug("^1Failed! Rolled: " .. roll .. "^0")
         return false -- Failure
     end
 end
@@ -77,20 +76,18 @@ local function GenerateLoot(tableName, tiers, useGuaranteed)
         return
     end
 
-    if Debug then
-        lib.print.info("Selected tiers:")
-        lib.print.info(selectedTiers)
-    end
+    lib.print.debug("Selected tiers:")
+    lib.print.debug(selectedTiers)
 
     -- Roll for each selected tier to determine loot
     for tierName, tierData in pairs(selectedTiers) do
-        if Debug then lib.print.info("^5[ -- Generating chance for tier: " .. tierName .. " -- ]^0") end
+        lib.print.debug("^5[ -- Generating chance for tier: " .. tierName .. " -- ]^0")
         local tierSuccess = RollForSuccess(tierData.tableChance.low, tierData.tableChance.high)
 
         if not tierSuccess then
-            if Debug then lib.print.info('^1"' .. tierName .. '" tier not selected by chance^0') end
+            lib.print.debug('^1"' .. tierName .. '" tier not selected by chance^0')
         else
-            if Debug then lib.print.info('^2"' .. tierName .. '" tier selected by chance^0') end
+            lib.print.debug('^2"' .. tierName .. '" tier selected by chance^0')
         end
 
         -- Check for overall guaranteed drops existence
@@ -98,14 +95,14 @@ local function GenerateLoot(tableName, tiers, useGuaranteed)
 
         -- Process guaranteed drops
         if not useGuaranteed then
-            if Debug then lib.print.info("Guaranteed drops: false") end
+            lib.print.debug("Guaranteed drops: false")
         elseif not hasGuaranteedDrops then
-            if Debug then lib.print.info('^1"' .. tierName .. '" tier has no guaranteed drops^0') end
+            lib.print.debug('^1"' .. tierName .. '" tier has no guaranteed drops^0')
         else
-            if Debug then lib.print.info("^9Checking for guaranteed drops...^0") end
+            lib.print.debug("^9Checking for guaranteed drops...^0")
             for _, guaranteedDrop in ipairs(tierData.guaranteed) do
                 local amount = math.random(guaranteedDrop.minAmount, guaranteedDrop.maxAmount)
-                if Debug then lib.print.info('^2Guaranteed Drop Added - Item: "' .. guaranteedDrop.item .. '", Amount: ' .. amount .. "^0") end
+                lib.print.debug('^2Guaranteed Drop Added - Item: "' .. guaranteedDrop.item .. '", Amount: ' .. amount .. "^0")
                 -- Add guaranteed drop to the loot table
                 table.insert(loot, {item = guaranteedDrop.item, amount = amount})
             end
@@ -114,7 +111,7 @@ local function GenerateLoot(tableName, tiers, useGuaranteed)
         -- Roll for random items within the current tier
         if tierSuccess then
             for _, itemData in ipairs(tierData.items) do
-                if Debug then lib.print.info('^4[ -- Generating chance for item: "' .. itemData.item .. '" in tier: ' .. tierName .. " -- ]^0") end
+                lib.print.debug('^4[ -- Generating chance for item: "' .. itemData.item .. '" in tier: ' .. tierName .. " -- ]^0")
                 local itemSuccess = RollForSuccess(itemData.itemChance.low, itemData.itemChance.high)
 
                 -- Check if the item roll succeeded
@@ -122,16 +119,15 @@ local function GenerateLoot(tableName, tiers, useGuaranteed)
                     local amount = math.random(itemData.minAmount, itemData.maxAmount)
                     -- Add selected item to the loot table
                     table.insert(loot, {item = itemData.item, amount = amount})
-                    if Debug then lib.print.info('^2Item Added: "' .. itemData.item .. '", Amount: ' .. amount .. "^0") end
+                    lib.print.debug('^2Item Added: "' .. itemData.item .. '", Amount: ' .. amount .. "^0")
                 end
             end
         end
     end
 
-    if Debug then
-        lib.print.info("^6Final loot: ^0")
-        lib.print.info(loot)
-    end
+    lib.print.debug("^6Final loot: ^0")
+    lib.print.debug(loot)
+
     return loot -- Return the generated loot table
 end
 

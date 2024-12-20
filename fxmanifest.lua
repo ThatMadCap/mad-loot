@@ -9,7 +9,7 @@ description 'WIP - FiveM Global Loot Tables'
 lua54 'yes'
 
 shared_scripts {
-  '@ox_core/lib/init.lua',
+  '@ox_lib/init.lua',
 }
 
 server_scripts {

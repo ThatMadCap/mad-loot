@@ -135,3 +135,6 @@ end
 
 ## Contributing
 If you'd like to contribute to mad-loot, feel free to open issues or submit pull requests. Please follow the project's coding conventions and ensure tests are included for any new features.
+
+#### Contributors:
+- [Simon](https://github.com/simsonas86)

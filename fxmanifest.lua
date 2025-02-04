@@ -1,12 +1,12 @@
 fx_version 'cerulean'
-
+lua54 'yes'
+use_experimental_fxv2_oal 'yes'
 game 'gta5'
 
-author 'MadCap / Yume'
+name 'mad-loot'
 version '0.1.3'
-description 'WIP - FiveM Global Loot Tables'
-
-lua54 'yes'
+description 'Global Loot Tables'
+author 'MadCap'
 
 shared_scripts {
   '@ox_lib/init.lua',
